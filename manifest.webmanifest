@@ -1,9 +1,9 @@
 {
-  "name": "Bass Guesser V2",
+  "name": "Bass Guesser V3",
   "short_name": "Bass Guesser",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#0d1117",
-  "theme_color": "#11151c",
-  "description": "Entraînement des notes de guitare basse avec reconnaissance micro."
+  "theme_color": "#10151d",
+  "description": "Coach de guitare basse: manche, oreille, rythme et gospel."
 }

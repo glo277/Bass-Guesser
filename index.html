@@ -3,375 +3,329 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#11151c">
+<meta name="theme-color" content="#10151d">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Bass Guesser V2</title>
+<title>Bass Guesser V3</title>
 <style>
 :root{
-  --bg:#0d1117;--card:#171c24;--card2:#202733;--text:#f5f7fb;--muted:#97a2b1;
-  --accent:#8ab4ff;--good:#59d98e;--bad:#ff6b6b;--warn:#ffd166;--line:#2c3542
+  --bg:#0d1117;--card:#171d25;--card2:#202834;--text:#f5f7fb;--muted:#96a1b0;
+  --accent:#8ab4ff;--good:#59d98e;--bad:#ff6b6b;--warn:#ffd166;--line:#2d3745
 }
 *{box-sizing:border-box}
-body{margin:0;background:linear-gradient(180deg,#0b0e13,#121823);color:var(--text);
-font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
-.wrap{max-width:760px;margin:auto;padding:18px;padding-bottom:42px}
-h1{font-size:30px;margin:6px 0}.subtitle{color:var(--muted);margin-bottom:16px}
-.card{background:rgba(23,28,36,.97);border:1px solid var(--line);border-radius:20px;padding:16px;margin:12px 0;box-shadow:0 14px 35px rgba(0,0,0,.18)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-@media(max-width:560px){.grid2,.grid3{grid-template-columns:1fr}}
-label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
-select,button{width:100%;font:inherit;border-radius:14px;padding:13px 14px;border:1px solid var(--line)}
-select{background:#222a35;color:var(--text)}
-button{background:var(--accent);color:#07101d;font-weight:800;border:0}
-button.secondary{background:#29313d;color:var(--text)} button.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
-button:disabled{opacity:.55}
-.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.tab{background:#222a35;color:var(--text);font-size:13px;padding:11px 6px}
-.tab.active{background:var(--accent);color:#07101d}
-.targetLabel{text-align:center;color:var(--muted);margin-top:4px}
-.note{font-size:72px;line-height:1;font-weight:950;text-align:center;margin:18px 0 10px;letter-spacing:1px}
-.chord{font-size:56px}.hiddenNote{font-size:48px;letter-spacing:4px}
-.detected{text-align:center;font-size:21px}.status{text-align:center;font-weight:800;min-height:28px;margin:10px 0}
-.good{color:var(--good)}.bad{color:var(--bad)}.warn{color:var(--warn)}.muted{color:var(--muted)}
-.meter{height:10px;background:#252d38;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:var(--good);transition:width .08s}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
-.stat{background:var(--card2);border-radius:14px;padding:10px;text-align:center}.stat b{display:block;font-size:21px}
+body{margin:0;background:linear-gradient(180deg,#0a0e13,#121927);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+.wrap{max-width:820px;margin:auto;padding:18px 16px 46px}
+h1{font-size:30px;margin:6px 0}.sub{color:var(--muted);margin-bottom:14px}
+.card{background:rgba(23,29,37,.98);border:1px solid var(--line);border-radius:20px;padding:16px;margin:12px 0;box-shadow:0 14px 35px rgba(0,0,0,.16)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:620px){.grid2,.grid4{grid-template-columns:1fr 1fr}}
+button,select,input{font:inherit;border-radius:14px;padding:12px 13px}
+button{border:0;background:var(--accent);color:#07101d;font-weight:850}
+button.secondary{background:#293240;color:var(--text)}button.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+select{width:100%;background:#222a35;color:var(--text);border:1px solid var(--line)}
+label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}
+.modeBtn{background:#222a35;color:var(--text);font-size:13px}.modeBtn.active{background:var(--accent);color:#07101d}
+.title2{font-size:18px;font-weight:900;margin-bottom:10px}.muted{color:var(--muted)}
+.note{font-size:72px;line-height:1;font-weight:950;text-align:center;margin:18px 0 10px}
+.detected{text-align:center;font-size:21px}.status{text-align:center;font-weight:850;min-height:28px;margin:10px 0}
+.good{color:var(--good)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+.meter{height:10px;background:#252e3a;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:var(--good)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.stat{background:var(--card2);border-radius:14px;padding:10px;text-align:center}.stat b{display:block;font-size:21px}
 .row{display:flex;gap:9px;flex-wrap:wrap}.row button{flex:1;min-width:120px}
-.hintBox{background:#111821;border:1px dashed #344153;border-radius:14px;padding:12px;margin-top:10px;line-height:1.5}
-.small{font-size:13px;line-height:1.55}.title2{font-size:18px;font-weight:850;margin-bottom:10px}
-.noteStats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.noteStat{background:#202733;border-radius:12px;padding:9px;text-align:center;font-size:13px}
-.noteStat b{display:block;font-size:18px}
-.switchrow{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#26303c;color:#c9d2df;font-size:12px}
-.footer{color:var(--muted);font-size:12px;text-align:center;margin-top:18px}
+.box{background:#111821;border:1px dashed #344153;border-radius:14px;padding:12px;margin-top:10px;line-height:1.5}
+.today{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.task{background:#202834;border-radius:14px;padding:12px;text-align:center}.task b{display:block;font-size:18px}
+.noteStats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.noteStat{background:#202834;border-radius:12px;padding:9px;text-align:center;font-size:13px}.noteStat b{display:block;font-size:18px}
+.small{font-size:13px;line-height:1.5}
+.rangeLine{display:flex;align-items:center;gap:10px}.rangeLine input{flex:1}
+.progressWrap{height:8px;background:#202834;border-radius:99px;overflow:hidden}.progressFill{height:100%;background:var(--accent);width:0}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>🎸 Bass Guesser V2</h1>
-  <div class="subtitle">Ton entraîneur de manche + oreille pour basse 4 cordes E–A–D–G.</div>
+<h1>🎸 Bass Guesser V3</h1>
+<div class="sub">Manche • Oreille • Rythme • Gospel / Impro</div>
 
-  <div class="card">
-    <div class="tabs">
-      <button class="tab active" data-mode="notes">Notes</button>
-      <button class="tab" data-mode="ear">Oreille</button>
-      <button class="tab" data-mode="speed">Vitesse</button>
-      <button class="tab" data-mode="progression">Progression</button>
+<div class="card">
+  <div class="title2">Aujourd’hui</div>
+  <div class="today">
+    <div class="task"><span class="muted">Manche</span><b id="tFret">0/20</b></div>
+    <div class="task"><span class="muted">Oreille</span><b id="tEar">0/10</b></div>
+    <div class="task"><span class="muted">Rythme</span><b id="tRhythm">0/10</b></div>
+    <div class="task"><span class="muted">Gospel</span><b id="tGospel">0/5</b></div>
+  </div>
+  <div class="progressWrap" style="margin-top:12px"><div id="dailyProgress" class="progressFill"></div></div>
+</div>
+
+<div class="card">
+  <div class="grid4">
+    <button class="modeBtn active" data-mode="fret">Manche</button>
+    <button class="modeBtn" data-mode="ear">Oreille</button>
+    <button class="modeBtn" data-mode="rhythm">Rythme</button>
+    <button class="modeBtn" data-mode="gospel">Gospel / Impro</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="grid2">
+    <div>
+      <label>Cordes</label>
+      <select id="strings">
+        <option value="E">Mi</option>
+        <option value="A">La</option>
+        <option value="EA" selected>Mi + La</option>
+        <option value="EAD">Mi + La + Ré</option>
+        <option value="EADG">Toutes</option>
+      </select>
+    </div>
+    <div>
+      <label>Zone</label>
+      <select id="frets">
+        <option value="0-5" selected>Cases 0 à 5</option>
+        <option value="0-7">Cases 0 à 7</option>
+        <option value="0-12">Cases 0 à 12</option>
+      </select>
+    </div>
+    <div>
+      <label>Notes</label>
+      <select id="noteSet">
+        <option value="natural" selected>Naturelles</option>
+        <option value="all">Avec dièses</option>
+      </select>
+    </div>
+    <div>
+      <label>Entraînement</label>
+      <select id="smartMode">
+        <option value="smart" selected>Intelligent</option>
+        <option value="random">Aléatoire</option>
+        <option value="multi">Plusieurs positions</option>
+      </select>
     </div>
   </div>
+</div>
 
-  <div class="card">
-    <div class="grid2">
-      <div>
-        <label>Cordes à travailler</label>
-        <select id="strings">
-          <option value="E">Mi seulement</option>
-          <option value="A">La seulement</option>
-          <option value="EA" selected>Mi + La</option>
-          <option value="EAD">Mi + La + Ré</option>
-          <option value="EADG">Toutes les cordes</option>
-        </select>
-      </div>
-      <div>
-        <label>Zone du manche</label>
-        <select id="frets">
-          <option value="0-5" selected>Cases 0 à 5</option>
-          <option value="0-7">Cases 0 à 7</option>
-          <option value="0-12">Cases 0 à 12</option>
-        </select>
-      </div>
-      <div>
-        <label>Notes</label>
-        <select id="noteSet">
-          <option value="natural" selected>Naturelles seulement</option>
-          <option value="all">Avec dièses</option>
-        </select>
-      </div>
-      <div>
-        <label>Correction</label>
-        <select id="hintMode">
-          <option value="after2" selected>Indice après 2 erreurs</option>
-          <option value="always">Toujours afficher</option>
-          <option value="never">Jamais</option>
-        </select>
-      </div>
-    </div>
+<div class="card" id="earSettings" style="display:none">
+  <div class="title2">Réglages oreille</div>
+  <div class="rangeLine">
+    <span class="muted">Volume</span>
+    <input id="earVolume" type="range" min="0.15" max="0.75" step="0.05" value="0.55">
+    <span id="earVolumeVal">55%</span>
+  </div>
+  <div class="rangeLine" style="margin-top:10px">
+    <span class="muted">Durée</span>
+    <input id="earDuration" type="range" min="1.2" max="4.0" step="0.2" value="2.8">
+    <span id="earDurationVal">2.8s</span>
+  </div>
+</div>
+
+<div class="card" id="rhythmSettings" style="display:none">
+  <div class="title2">Réglages rythme</div>
+  <label>Tempo</label>
+  <select id="bpm">
+    <option>60</option><option>70</option><option selected>80</option><option>90</option><option>100</option>
+  </select>
+</div>
+
+<div class="card">
+  <div id="targetLabel" class="muted" style="text-align:center">Joue cette note</div>
+  <div id="target" class="note">DO</div>
+  <div id="detected" class="detected">Détectée : —</div>
+  <div class="meter"><div id="bar" class="bar"></div></div>
+  <div id="status" class="status muted">Appuie sur Démarrer puis autorise le micro.</div>
+  <div id="hint" class="box" style="display:none"></div>
+
+  <div class="stats">
+    <div class="stat"><span class="muted">Score</span><b id="score">0</b></div>
+    <div class="stat"><span class="muted">Série</span><b id="streak">0</b></div>
+    <div class="stat"><span class="muted">Essais</span><b id="tries">0</b></div>
+    <div class="stat"><span class="muted">Temps</span><b id="timer">—</b></div>
   </div>
 
-  <div class="card">
-    <div id="targetLabel" class="targetLabel">Joue cette note</div>
-    <div id="target" class="note">DO</div>
-    <div id="detected" class="detected">Détectée : —</div>
-    <div class="meter"><div id="bar" class="bar"></div></div>
-    <div id="status" class="status muted">Appuie sur « Démarrer » et autorise le micro.</div>
-    <div id="hint" class="hintBox" style="display:none"></div>
-
-    <div class="stats">
-      <div class="stat"><span class="muted">Score</span><b id="score">0</b></div>
-      <div class="stat"><span class="muted">Série</span><b id="streak">0</b></div>
-      <div class="stat"><span class="muted">Essais</span><b id="tries">0</b></div>
-      <div class="stat"><span class="muted">Temps</span><b id="timer">—</b></div>
-    </div>
-
-    <div class="row" style="margin-top:13px">
-      <button id="startBtn">Démarrer</button>
-      <button id="soundBtn" class="secondary" style="display:none">🔊 Réécouter</button>
-      <button id="skipBtn" class="ghost">Passer</button>
-    </div>
+  <div class="row" style="margin-top:13px">
+    <button id="startBtn">Démarrer</button>
+    <button id="soundBtn" class="secondary" style="display:none">🔊 Réécouter</button>
+    <button id="metroBtn" class="secondary" style="display:none">🥁 Métronome</button>
+    <button id="skipBtn" class="ghost">Passer</button>
   </div>
+</div>
 
-  <div class="card" id="gospelCard">
-    <div class="title2">🔥 Mini mode Gospel</div>
-    <div class="small muted">Travaille la fondamentale, la quinte et l’octave sur la note affichée.</div>
-    <div class="row" style="margin-top:10px">
-      <button id="gospelBtn" class="secondary">Activer le défi Gospel</button>
-    </div>
-    <div id="gospelText" class="hintBox" style="display:none"></div>
+<div class="card">
+  <div class="title2">Faiblesses actuelles</div>
+  <div id="weakNotes" class="small muted">Pas encore assez de données.</div>
+</div>
+
+<div class="card">
+  <div class="title2">Statistiques par note</div>
+  <div id="noteStats" class="noteStats"></div>
+  <div class="row" style="margin-top:12px">
+    <button id="resetStats" class="ghost">Réinitialiser les statistiques</button>
   </div>
+</div>
 
-  <div class="card">
-    <div class="switchrow">
-      <div>
-        <div class="title2" style="margin:0">Statistiques par note</div>
-        <div class="small muted">Enregistrées sur ton iPhone.</div>
-      </div>
-      <button id="resetStats" class="ghost" style="width:auto">Réinitialiser</button>
-    </div>
-    <div id="noteStats" class="noteStats" style="margin-top:12px"></div>
-  </div>
-
-  <div class="card small muted">
-    <b>Pour une bonne détection :</b><br>
-    • Utilise Safari via ton site GitHub Pages en HTTPS.<br>
-    • Pose l’iPhone près de l’ampli, sans musique autour.<br>
-    • Joue une note seule et laisse-la sonner environ une seconde.<br>
-    • Si le grave est mal reconnu, monte légèrement le volume de l’ampli.
-  </div>
-
-  <div class="footer">Bass Guesser V2 • données de progression stockées uniquement dans ton navigateur</div>
+<div class="card small muted">
+<b>Oreille :</b> la note est désormais plus longue et plus forte par défaut. Si ton iPhone sature, baisse légèrement le volume dans les réglages de l’app.<br><br>
+<b>Conseil :</b> joue une note seule, nette, sans autre musique autour. Sur les notes très graves, rapproche l’iPhone de l’ampli.
+</div>
 </div>
 
 <script>
-const NAMES=['DO','DO♯','RÉ','RÉ♯','MI','FA','FA♯','SOL','SOL♯','LA','LA♯','SI'];
-const NAT=new Set([0,2,4,5,7,9,11]);
-const STRING_PC={E:4,A:9,D:2,G:7};
-const STRING_FR={E:'Mi',A:'La',D:'Ré',G:'Sol'};
-const PROG=[{label:'DO',pc:0},{label:'SOL',pc:7},{label:'LAm',pc:9},{label:'FA',pc:5}];
-
+const N=['DO','DO♯','RÉ','RÉ♯','MI','FA','FA♯','SOL','SOL♯','LA','LA♯','SI'];
+const NAT=[0,2,4,5,7,9,11], NATSET=new Set(NAT);
+const SPC={E:4,A:9,D:2,G:7}, SFR={E:'Mi',A:'La',D:'Ré',G:'Sol'};
 const $=id=>document.getElementById(id);
-let mode='notes', audioCtx, analyser, source, buf, running=false;
-let targetPc=0, targetLabel='DO', score=0, streak=0, tries=0, wrongForCurrent=0;
-let stable=0, lastPc=null, lockout=false, lastWrongAt=0, progressIndex=0;
-let speedStart=null, speedCount=0, gospel=false, toneOsc=null;
+let mode='fret',ctx,an,src,buf,running=false,target=0,score=0,streak=0,tries=0,stable=0,lastPc=null,lock=false;
+let metroTimer=null, beat=0, rhythmNeedBeat=false;
+const stats=JSON.parse(localStorage.getItem('bgv3_stats')||'{}');
+const daily=JSON.parse(localStorage.getItem('bgv3_daily')||'{"date":"","fret":0,"ear":0,"rhythm":0,"gospel":0}');
+for(let i=0;i<12;i++) if(!stats[i])stats[i]={ok:0,bad:0};
+const todayKey=new Date().toISOString().slice(0,10);
+if(daily.date!==todayKey){daily.date=todayKey;daily.fret=daily.ear=daily.rhythm=daily.gospel=0}
 
-const stats=JSON.parse(localStorage.getItem('bassStatsV2')||'{}');
-for(let i=0;i<12;i++) if(!stats[i]) stats[i]={ok:0,bad:0};
+function save(){localStorage.setItem('bgv3_stats',JSON.stringify(stats));localStorage.setItem('bgv3_daily',JSON.stringify(daily));renderStats();renderDaily()}
+function strings(){return $('strings').value.split('')}
+function frange(){return $('frets').value.split('-').map(Number)}
+function positions(){
+  const [a,b]=frange(),out=[];
+  strings().forEach(s=>{for(let f=a;f<=b;f++){let pc=(SPC[s]+f)%12;if($('noteSet').value==='natural'&&!NATSET.has(pc))continue;out.push({s,f,pc})}})
+  return out
+}
+function allowed(){return [...new Set(positions().map(x=>x.pc))]}
+function posFor(pc){return positions().filter(x=>x.pc===pc).map(x=>`corde ${SFR[x.s]}, case ${x.f}`)}
 
-function saveStats(){ localStorage.setItem('bassStatsV2',JSON.stringify(stats)); renderStats(); }
+function weightedTarget(){
+  const pcs=allowed(); if(!pcs.length)return 0;
+  if($('smartMode').value!=='smart')return pcs[Math.floor(Math.random()*pcs.length)];
+  let bag=[];
+  pcs.forEach(pc=>{
+    const s=stats[pc],total=s.ok+s.bad,acc=total?s.ok/total:0.5;
+    const weight=Math.max(1,Math.round((1.2-acc)*8)+(total<4?3:0));
+    for(let i=0;i<weight;i++)bag.push(pc)
+  });
+  return bag[Math.floor(Math.random()*bag.length)]
+}
+function newTarget(){
+  let n=weightedTarget(); const pcs=allowed();
+  if(pcs.length>1&&n===target)n=pcs[(pcs.indexOf(n)+1)%pcs.length];
+  target=n; stable=0;lastPc=null;$('bar').style.width='0%';$('hint').style.display='none';
+  if(mode==='ear'){
+    $('target').textContent='???';$('targetLabel').textContent='Écoute et retrouve la note';$('soundBtn').style.display='block';
+    setTimeout(playEar,250);
+  }else if(mode==='rhythm'){
+    $('target').textContent=N[n];$('targetLabel').textContent='Joue sur le prochain temps 1';$('soundBtn').style.display='none';
+  }else if(mode==='gospel'){
+    $('target').textContent=N[n];$('targetLabel').textContent='Fondamentale → Quinte → Octave';$('soundBtn').style.display='none';
+    const fifth=(n+7)%12;
+    $('hint').style.display='block';$('hint').innerHTML=`🔥 Joue <b>${N[n]}</b> → <b>${N[fifth]}</b> → octave <b>${N[n]}</b><br><span class="muted">${posFor(n).slice(0,2).join(' • ')}</span>`;
+  }else{
+    $('target').textContent=N[n];$('targetLabel').textContent=$('smartMode').value==='multi'?'Trouve cette note à plusieurs endroits':'Joue cette note';$('soundBtn').style.display='none';
+  }
+  $('status').className='status muted';$('status').textContent='À toi 🎸';
+}
+
+function renderDaily(){
+  $('tFret').textContent=`${daily.fret}/20`;$('tEar').textContent=`${daily.ear}/10`;$('tRhythm').textContent=`${daily.rhythm}/10`;$('tGospel').textContent=`${daily.gospel}/5`;
+  const pct=Math.min(100,((Math.min(daily.fret,20)+Math.min(daily.ear,10)+Math.min(daily.rhythm,10)+Math.min(daily.gospel,5))/45)*100);
+  $('dailyProgress').style.width=pct+'%';
+}
 function renderStats(){
   $('noteStats').innerHTML='';
-  const pcs=$('noteSet').value==='natural'?[0,2,4,5,7,9,11]:[0,1,2,3,4,5,6,7,8,9,10,11];
+  const pcs=$('noteSet').value==='natural'?NAT:[0,1,2,3,4,5,6,7,8,9,10,11];
+  let weak=[];
   pcs.forEach(pc=>{
-    const s=stats[pc], total=s.ok+s.bad, pct=total?Math.round(s.ok/total*100):0;
-    const d=document.createElement('div'); d.className='noteStat';
-    d.innerHTML=`<span>${NAMES[pc]}</span><b>${pct}%</b><span class="muted">${s.ok}/${total}</span>`;
-    $('noteStats').appendChild(d);
-  })
-}
-
-function selectedStrings(){ return $('strings').value.split(''); }
-function fretRange(){ const [a,b]=$('frets').value.split('-').map(Number); return [a,b]; }
-
-function allowedPositions(){
-  const [f0,f1]=fretRange(), out=[];
-  selectedStrings().forEach(s=>{
-    for(let fret=f0;fret<=f1;fret++){
-      const pc=(STRING_PC[s]+fret)%12;
-      if($('noteSet').value==='natural' && !NAT.has(pc)) continue;
-      out.push({s,fret,pc});
-    }
+    const s=stats[pc],tot=s.ok+s.bad,pct=tot?Math.round(s.ok/tot*100):0;
+    const d=document.createElement('div');d.className='noteStat';d.innerHTML=`<span>${N[pc]}</span><b>${pct}%</b><span class="muted">${s.ok}/${tot}</span>`;$('noteStats').appendChild(d);
+    if(tot>=3)weak.push({pc,pct,tot})
   });
-  return out;
-}
-function allowedPcs(){ return [...new Set(allowedPositions().map(x=>x.pc))]; }
-
-function positionsFor(pc){
-  return allowedPositions().filter(x=>x.pc===pc)
-    .map(x=>`corde ${STRING_FR[x.s]}, case ${x.fret}`);
-}
-function showHint(force=false){
-  const hm=$('hintMode').value;
-  if(!force && hm==='never'){$('hint').style.display='none';return}
-  if(!force && hm==='after2' && wrongForCurrent<2){$('hint').style.display='none';return}
-  const pos=positionsFor(targetPc);
-  $('hint').style.display='block';
-  $('hint').innerHTML=`💡 <b>${NAMES[targetPc]}</b> : ${pos.join(' • ') || 'aucune position dans la zone choisie'}`;
-}
-
-function chooseTarget(){
-  if(mode==='progression'){
-    const item=PROG[progressIndex%PROG.length];
-    targetPc=item.pc; targetLabel=item.label;
-    $('target').textContent=item.label; $('target').className='note chord';
-    $('targetLabel').textContent='Progression Do → Sol → LAm → Fa';
-  } else {
-    const pcs=allowedPcs();
-    if(!pcs.length) return;
-    let n=pcs[Math.floor(Math.random()*pcs.length)];
-    if(pcs.length>1 && n===targetPc) n=pcs[(pcs.indexOf(n)+1)%pcs.length];
-    targetPc=n; targetLabel=NAMES[n];
-    if(mode==='ear'){
-      $('target').textContent='???'; $('target').className='note hiddenNote';
-      $('targetLabel').textContent='Écoute puis retrouve la note';
-      setTimeout(()=>playTarget(),220);
-    }else{
-      $('target').textContent=NAMES[n]; $('target').className='note';
-      $('targetLabel').textContent=mode==='speed'?'Trouve 10 notes le plus vite possible':'Joue cette note';
-    }
-  }
-  wrongForCurrent=0; stable=0; lastPc=null; $('bar').style.width='0%';
-  $('hint').style.display='none';
-  $('status').className='status muted'; $('status').textContent='À toi 🎸';
-  if($('hintMode').value==='always') showHint(true);
-  if(gospel) updateGospel();
-}
-
-function updateGospel(){
-  const fifth=(targetPc+7)%12, octave=targetPc;
-  const rootPos=positionsFor(targetPc)[0]||'position libre';
-  $('gospelText').style.display='block';
-  $('gospelText').innerHTML=`Joue : <b>${NAMES[targetPc]}</b> → <b>${NAMES[fifth]}</b> → octave <b>${NAMES[octave]}</b><br><span class="muted">Départ conseillé : ${rootPos}</span>`;
-}
-function toggleGospel(){
-  gospel=!gospel;
-  $('gospelBtn').textContent=gospel?'Désactiver le défi Gospel':'Activer le défi Gospel';
-  $('gospelText').style.display=gospel?'block':'none';
-  if(gospel) updateGospel();
+  weak.sort((a,b)=>a.pct-b.pct);
+  $('weakNotes').textContent=weak.length?weak.slice(0,3).map(x=>`${N[x.pc]} (${x.pct}%)`).join(' • '):'Pas encore assez de données.';
 }
 
 function setMode(m){
-  mode=m; document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
-  $('soundBtn').style.display=m==='ear'?'block':'none';
-  speedStart=null; speedCount=0; progressIndex=0; $('timer').textContent='—';
-  chooseTarget();
+  mode=m;document.querySelectorAll('.modeBtn').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
+  $('earSettings').style.display=m==='ear'?'block':'none';$('rhythmSettings').style.display=m==='rhythm'?'block':'none';
+  $('metroBtn').style.display=m==='rhythm'?'block':'none';stopMetro();newTarget()
 }
 
-function correlationPitch(data,sr){
-  let rms=0; for(let i=0;i<data.length;i++) rms+=data[i]*data[i];
-  rms=Math.sqrt(rms/data.length); if(rms<0.012) return -1;
-
-  const minF=35,maxF=350;
-  const minLag=Math.floor(sr/maxF), maxLag=Math.min(Math.floor(sr/minF),data.length-2);
-  let bestLag=-1,best=-1;
-  for(let lag=minLag;lag<=maxLag;lag++){
-    let sum=0,n=0;
-    for(let i=0;i<data.length-lag;i+=2){sum+=data[i]*data[i+lag];n++}
-    sum/=n;
-    if(sum>best){best=sum;bestLag=lag}
-  }
-  if(bestLag<0) return -1;
-  return sr/bestLag;
+function playEar(){
+  if(!ctx)ctx=new (window.AudioContext||window.webkitAudioContext)();
+  const vol=parseFloat($('earVolume').value),dur=parseFloat($('earDuration').value);
+  let midi=40;while(((midi%12)+12)%12!==target)midi++;
+  const f=440*Math.pow(2,(midi-69)/12);
+  const master=ctx.createGain();master.gain.setValueAtTime(.0001,ctx.currentTime);
+  master.gain.exponentialRampToValueAtTime(vol,ctx.currentTime+.03);
+  master.gain.setValueAtTime(vol,ctx.currentTime+Math.max(.05,dur-.35));
+  master.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+dur);
+  master.connect(ctx.destination);
+  [[1,'triangle',1],[2,'sine',.32],[3,'sine',.12]].forEach(([mult,type,gain])=>{
+    const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.value=f*mult;g.gain.value=gain;o.connect(g);g.connect(master);o.start();o.stop(ctx.currentTime+dur+.05)
+  });
 }
-function freqPc(f){ return ((Math.round(69+12*Math.log2(f/440))%12)+12)%12; }
+
+function clickBeat(accent=false){
+  if(!ctx)ctx=new (window.AudioContext||window.webkitAudioContext)();
+  const o=ctx.createOscillator(),g=ctx.createGain();o.frequency.value=accent?1200:800;o.type='square';g.gain.setValueAtTime(.12,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.06);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+.07)
+}
+function startMetro(){
+  stopMetro(); const bpm=parseInt($('bpm').value),ms=60000/bpm;beat=0;
+  metroTimer=setInterval(()=>{beat=(beat%4)+1;clickBeat(beat===1);rhythmNeedBeat=beat===1;$('timer').textContent=`${bpm} BPM • ${beat}`},ms);
+  $('metroBtn').textContent='⏹ Stop'
+}
+function stopMetro(){if(metroTimer){clearInterval(metroTimer);metroTimer=null}$('metroBtn').textContent='🥁 Métronome';$('timer').textContent='—';rhythmNeedBeat=false}
+function toggleMetro(){metroTimer?stopMetro():startMetro()}
+
+function pitch(data,sr){
+  let rms=0;for(let i=0;i<data.length;i++)rms+=data[i]*data[i];rms=Math.sqrt(rms/data.length);if(rms<.012)return-1;
+  const minF=35,maxF=350,minLag=Math.floor(sr/maxF),maxLag=Math.min(Math.floor(sr/minF),data.length-2);
+  let best=-1,bLag=-1;
+  for(let lag=minLag;lag<=maxLag;lag++){let sum=0,n=0;for(let i=0;i<data.length-lag;i+=2){sum+=data[i]*data[i+lag];n++}sum/=n;if(sum>best){best=sum;bLag=lag}}
+  return bLag>0?sr/bLag:-1
+}
+const pcFromFreq=f=>((Math.round(69+12*Math.log2(f/440))%12)+12)%12;
 
 async function start(){
   try{
     const stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
-    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-    analyser=audioCtx.createAnalyser(); analyser.fftSize=4096;
-    buf=new Float32Array(analyser.fftSize);
-    source=audioCtx.createMediaStreamSource(stream); source.connect(analyser);
-    running=true; $('startBtn').disabled=true; $('startBtn').textContent='🎙️ En écoute';
-    chooseTarget(); requestAnimationFrame(loop);
-  }catch(e){
-    $('status').className='status bad'; $('status').textContent='Micro refusé. Autorise le micro pour ce site dans Safari.';
-  }
-}
-
-function playTarget(){
-  if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-  const baseMidi=40; // E2 neighborhood
-  let midi=baseMidi;
-  while(((midi%12)+12)%12!==targetPc) midi++;
-  const f=440*Math.pow(2,(midi-69)/12);
-  const o=audioCtx.createOscillator(), g=audioCtx.createGain();
-  o.type='triangle'; o.frequency.value=f;
-  g.gain.setValueAtTime(.0001,audioCtx.currentTime);
-  g.gain.exponentialRampToValueAtTime(.22,audioCtx.currentTime+.02);
-  g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+.9);
-  o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+.95);
-}
-
-function markWrong(pc){
-  const now=Date.now();
-  if(now-lastWrongAt<700 || lockout) return;
-  lastWrongAt=now; wrongForCurrent++; tries++; streak=0;
-  stats[targetPc].bad++; saveStats();
-  $('tries').textContent=tries; $('streak').textContent=streak;
-  $('status').className='status bad'; $('status').textContent=`Tu joues ${NAMES[pc]}. Réessaie.`;
-  showHint();
+    ctx=new (window.AudioContext||window.webkitAudioContext)();an=ctx.createAnalyser();an.fftSize=4096;buf=new Float32Array(an.fftSize);src=ctx.createMediaStreamSource(stream);src.connect(an);
+    running=true;$('startBtn').disabled=true;$('startBtn').textContent='🎙️ En écoute';requestAnimationFrame(loop)
+  }catch(e){$('status').className='status bad';$('status').textContent='Autorise le micro dans Safari.'}
 }
 
 function validate(){
-  if(lockout) return; lockout=true;
-  score++; tries++; streak++; stats[targetPc].ok++; saveStats();
-  $('score').textContent=score; $('tries').textContent=tries; $('streak').textContent=streak;
-  $('status').className='status good'; $('status').textContent='✅ Correct !';
-  $('bar').style.width='100%'; if(navigator.vibrate) navigator.vibrate(60);
-
-  if(mode==='speed'){
-    speedCount++;
-    if(!speedStart) speedStart=Date.now();
-    if(speedCount>=10){
-      const sec=((Date.now()-speedStart)/1000).toFixed(1);
-      $('timer').textContent=sec+'s';
-      $('status').textContent=`🏁 10 notes en ${sec} s !`;
-      speedStart=null; speedCount=0;
-      setTimeout(()=>{lockout=false;chooseTarget()},1600); return;
-    }else{
-      $('timer').textContent=`${speedCount}/10`;
-    }
-  }
-  if(mode==='progression') progressIndex=(progressIndex+1)%PROG.length;
-  setTimeout(()=>{lockout=false;chooseTarget()},650);
+  if(lock)return;lock=true;score++;tries++;streak++;stats[target].ok++;
+  if(mode==='fret')daily.fret++;if(mode==='ear')daily.ear++;if(mode==='rhythm')daily.rhythm++;if(mode==='gospel')daily.gospel++;
+  $('score').textContent=score;$('tries').textContent=tries;$('streak').textContent=streak;$('status').className='status good';$('status').textContent='✅ Correct !';$('bar').style.width='100%';
+  if(navigator.vibrate)navigator.vibrate(60);save();
+  setTimeout(()=>{lock=false;newTarget()},650)
+}
+function wrong(pc){
+  if(lock)return;tries++;streak=0;stats[target].bad++;$('tries').textContent=tries;$('streak').textContent=streak;$('status').className='status bad';$('status').textContent=`Tu joues ${N[pc]}. Réessaie.`;save();
+  $('hint').style.display='block';$('hint').innerHTML=`💡 ${N[target]} : ${posFor(target).join(' • ')||'pas de position dans la zone'}`
 }
 
-let lastLoop=0;
+let lastLoop=0,wrongStable=0,lastWrongPc=null;
 function loop(ts){
-  if(!running) return;
-  if(ts-lastLoop<90){requestAnimationFrame(loop);return}
-  lastLoop=ts;
-  analyser.getFloatTimeDomainData(buf);
-  const f=correlationPitch(buf,audioCtx.sampleRate);
+  if(!running)return;if(ts-lastLoop<90){requestAnimationFrame(loop);return}lastLoop=ts;
+  an.getFloatTimeDomainData(buf);const f=pitch(buf,ctx.sampleRate);
   if(f>35&&f<350){
-    const pc=freqPc(f); $('detected').textContent=`Détectée : ${NAMES[pc]} (${f.toFixed(1)} Hz)`;
-    if(pc===targetPc){
-      stable=(lastPc===pc)?stable+1:1; lastPc=pc;
-      $('bar').style.width=Math.min(100,stable*18)+'%';
-      $('status').className='status muted'; $('status').textContent='Tiens la note…';
-      if(stable>=5){stable=0;validate()}
+    const pc=pcFromFreq(f);$('detected').textContent=`Détectée : ${N[pc]} (${f.toFixed(1)} Hz)`;
+    if(pc===target){
+      stable=(lastPc===pc)?stable+1:1;lastPc=pc;$('bar').style.width=Math.min(100,stable*20)+'%';
+      if(mode==='rhythm'&&metroTimer&&!rhythmNeedBeat){$('status').className='status warn';$('status').textContent='Bonne note, mais attends le temps 1';stable=0}
+      else if(stable>=5){stable=0;validate()}
     }else{
-      if(lastPc===pc) stable++; else stable=1;
-      lastPc=pc; $('bar').style.width='0%';
-      if(stable>=4){stable=0;markWrong(pc)}
+      if(lastWrongPc===pc)wrongStable++;else wrongStable=1;lastWrongPc=pc;stable=0;$('bar').style.width='0%';
+      if(wrongStable>=5){wrongStable=0;wrong(pc)}
     }
-  }else{
-    $('detected').textContent='Détectée : —'; stable=0; $('bar').style.width='0%';
-  }
-  requestAnimationFrame(loop);
+  }else{$('detected').textContent='Détectée : —';stable=0;$('bar').style.width='0%'}
+  requestAnimationFrame(loop)
 }
 
-document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
-['strings','frets','noteSet','hintMode'].forEach(id=>$(id).onchange=()=>{renderStats();chooseTarget()});
-$('startBtn').onclick=start;
-$('skipBtn').onclick=()=>{if(mode==='progression')progressIndex=(progressIndex+1)%PROG.length;chooseTarget()};
-$('soundBtn').onclick=playTarget;
-$('gospelBtn').onclick=toggleGospel;
-$('resetStats').onclick=()=>{if(confirm('Réinitialiser toutes les statistiques ?')){for(let i=0;i<12;i++)stats[i]={ok:0,bad:0};saveStats()}};
-
-if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
-renderStats(); chooseTarget();
+document.querySelectorAll('.modeBtn').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+['strings','frets','noteSet','smartMode'].forEach(id=>$(id).onchange=()=>{renderStats();newTarget()});
+$('earVolume').oninput=()=>{$('earVolumeVal').textContent=Math.round(parseFloat($('earVolume').value)*100)+'%'};
+$('earDuration').oninput=()=>{$('earDurationVal').textContent=parseFloat($('earDuration').value).toFixed(1)+'s'};
+$('startBtn').onclick=start;$('soundBtn').onclick=playEar;$('metroBtn').onclick=toggleMetro;$('skipBtn').onclick=newTarget;
+$('resetStats').onclick=()=>{if(confirm('Réinitialiser toutes les statistiques ?')){for(let i=0;i<12;i++)stats[i]={ok:0,bad:0};save()}};
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
+renderDaily();renderStats();newTarget();
 </script>
 </body>
 </html>
